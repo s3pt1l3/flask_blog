@@ -2,4 +2,17 @@
 
 {% block title %}S3PT1L3 BLOG{% endblock title %}
 
-{% block main %}<h1>Main page</h1>{% endblock main %}
+{% block main %}
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Flask Blog</h1>
+                <p class="lead text-muted">A blog application made using Python and the Flask framework. You can view blog articles, rate them and comment on them. In order to rate or comment on an article, you need to create an account on the site.</p>
+                <p>
+                    <a href="#search" class="btn btn-success my-2">Go search posts</a>
+                    <a href="https://github.com/s3pt1l3/flask_blog" class="btn btn-secondary my-2">View on GitHub</a>
+                </p>
+            </div>
+        </div>
+    </section>
+{% endblock main %}
