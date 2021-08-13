@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/bootstrap.css") }}">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/bootstrap.css") }}" id="bootstrap-css">
+    
+    <!-- Custom styles -->
     <link rel="stylesheet" href="{{ url_for("static", filename="css/base.css") }}">
     <title>{% block title %}{% endblock title %}</title>
 </head>
@@ -20,13 +24,13 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2 text-white" id="navb">Home</a></li>
-            <li><a href="#" class="nav-link px-2 text-white" id="navb">Latest articles</a></li>
-            <li><a href="#" class="nav-link px-2 text-white" id="navb">About</a></li>
+            <li><a href="/" class="nav-link px-2 text-white" id="navb">Home</a></li>
+            <li><a href="/blog" class="nav-link px-2 text-white" id="navb">Latest</a></li>
+            <li><a href="/blog" class="nav-link px-2 text-white" id="navb">Popular</a></li>
             </ul>
 
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-            <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+            <input id="search" type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search" autocomplete="off">
             </form>
 
             <div class="text-end">
@@ -40,5 +44,8 @@
         {% block main %}
         {% endblock main %}
     </main>
+    <footer class="blog-footer">
+        <p>Copyright <small>&copy;</small> 2021 <a href="https://github.com/s3pt1l3">@s3pt1l3</a>. All Rights Reserved</p>
+    </footer>
 </body>
 </html>
