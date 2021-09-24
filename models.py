@@ -56,6 +56,7 @@ class Post(db.Model):
 
         return re.sub(r'[^\w+]', '-', s).lower()
 
+
 """Posts functions"""
 
 
@@ -88,7 +89,7 @@ def select_post_by_slug(slug: str):
 
     `slug`: Post slug
     """
-    
+
     return Post.query.filter(Post.slug == slug).first()
 
 
@@ -129,6 +130,16 @@ def delete_post(post_id: int):
     db.session.commit()
 
 
+def search_posts(query: str) -> list:
+    """
+    Function for searching post by query (post title and post text search)
+
+    `query`: Search query
+    """
+
+    return Post.query.filter(Post.title.contains(query) | Post.text.contains(query)).all()
+
+
 class Tag(db.Model):
     """
     Tags tabel model
@@ -151,7 +162,7 @@ class Tag(db.Model):
 
     def __repr__(self) -> str:
         return f'Tag id: {self.tag_id}\nTag title: {self.title}\nCreated at: {self.created_at}'
-    
+
     def __generate_slug(self) -> None:
         """
         Creating post slug from post title 
@@ -161,7 +172,7 @@ class Tag(db.Model):
             self.slug = self.slugify(self.title)
         else:
             self.slug = str(datetime.now())
-    
+
     def __slugify(s: str) -> str:
         """
         Generates slug string
