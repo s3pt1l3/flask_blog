@@ -29,8 +29,12 @@
             <li><a href="/blog" class="nav-link px-2 text-white" id="navb">Popular</a></li>
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-            <input id="search" type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search" autocomplete="off">
+            {% if "blog" in request.path %}
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="GET" action="search">
+            {% else %}
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" method="GET" action="blog/search">
+            {% endif %}
+            <input id="search" type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search" autocomplete="off" name="search">
             </form>
 
             <div class="text-end">
@@ -44,8 +48,14 @@
         {% block main %}
         {% endblock main %}
     </main>
-    <footer class="blog-footer">
-        <p>Copyright <small>&copy;</small> 2021 <a href="https://github.com/s3pt1l3">@s3pt1l3</a>. All Rights Reserved</p>
+    <footer class="footer">
+        <div class="container">
+            <span>
+                <p class="footer-p">Copyright <small>&copy;</small> 2021 {{ year }}
+                    <a href="https://github.com/s3pt1l3">@s3pt1l3</a>. All Rights Reserved
+                </p>
+            </span>
+        </div>
     </footer>
 </body>
 </html>
