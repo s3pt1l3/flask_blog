@@ -34,7 +34,8 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
 
     def __init__(self, *args, **kwargs):
-        super.__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
+        self.__generate_slug()
 
     def __repr__(self) -> str:
         return f'Post id: {self.post_id}\nPost title: {self.title}\nCreated at: {self.created_at}'
@@ -45,11 +46,11 @@ class Post(db.Model):
         """
 
         if self.title:
-            self.slug = self.slugify(self.title)
+            self.slug = self.__slugify(self.title)
         else:
             self.slug = str(datetime.now())
 
-    def __slugify(s: str) -> str:
+    def __slugify(self, s: str) -> str:
         """
         Generates slug string
         """
@@ -60,9 +61,9 @@ class Post(db.Model):
 """Posts functions"""
 
 
-def create_post(title: str, text: str):
+def create_post(title: str, text: str) -> Post:
     """
-    Function that creates post record in database
+    Function that creates post record in database and returns Post instance
 
     `title`: Post title
     `text`: Post text
@@ -71,6 +72,8 @@ def create_post(title: str, text: str):
     post = Post(title=title, text=text)
     db.session.add(post)
     db.session.commit()
+
+    return post
 
 
 def select_post(post_id: int):
@@ -158,7 +161,8 @@ class Tag(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
 
     def __init__(self, *args, **kwargs):
-        super.__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
+        self.__generate_slug()
 
     def __repr__(self) -> str:
         return f'Tag id: {self.tag_id}\nTag title: {self.title}\nCreated at: {self.created_at}'
@@ -169,7 +173,7 @@ class Tag(db.Model):
         """
 
         if self.title:
-            self.slug = self.slugify(self.title)
+            self.slug = self.__slugify(self.title)
         else:
             self.slug = str(datetime.now())
 
