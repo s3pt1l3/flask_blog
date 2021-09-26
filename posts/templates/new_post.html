@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Create a new post{% endblock title %}
+
+{% block main %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/new_post.css") }}">
+    
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Create a new post</h1>
+                <form action="{{ url_for('posts.new_post') }}" method="POST">
+                    {% for field in form %}
+                        <div>
+                            {{ field.label(class="lead") }}
+                            {{ field(class="form-control form-control-dark") }}
+                        </div>
+                    {% endfor %}
+                    <button id="submit_post" class="btn btn-success">Submit</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock main %}
