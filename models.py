@@ -101,7 +101,7 @@ def select_all_posts():
     Function that gets all posts records from database
     """
 
-    return Post.query.all()
+    return Post.query
 
 
 def update_post(post_id: int, title: str = None, text: str = None):
@@ -133,14 +133,14 @@ def delete_post(post_id: int):
     db.session.commit()
 
 
-def search_posts(query: str) -> list:
+def search_posts(query: str):
     """
     Function for searching post by query (post title and post text search)
 
     `query`: Search query
     """
 
-    return Post.query.filter(Post.title.contains(query) | Post.text.contains(query)).all()
+    return Post.query.filter(Post.title.contains(query) | Post.text.contains(query))
 
 
 class Tag(db.Model):
