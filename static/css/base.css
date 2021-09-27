@@ -24,3 +24,7 @@ html,body{
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 1);
 }
+
+.page-link {
+  color: #198754;
+}
