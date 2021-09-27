@@ -8,7 +8,14 @@ posts = Blueprint('posts', __name__, template_folder='templates')
 @posts.route('/')
 def posts_page():
     posts_ = select_all_posts()
-    return render_template('posts.html', posts=posts_)
+    page = request.args.get('page')
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+    pages = posts_.paginate(page=page, per_page=5)
+
+    return render_template('posts.html', posts=posts_, pages=pages)
 
 
 @posts.route('/<slug>')
@@ -20,9 +27,19 @@ def post_page(slug):
 @posts.route('/search')
 def search():
     query = request.args.get('search')
+    page = request.args.get('page')
 
-    posts_ = search_posts(query)
-    return render_template('posts.html', posts=posts_)
+    if query:
+        posts_ = search_posts(query)
+    else:
+        posts_ = select_all_posts()
+    if page and page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+    pages = posts_.paginate(page=page, per_page=5)
+
+    return render_template('posts.html', posts=posts_, pages=pages)
 
 
 @posts.route('/create', methods=['POST', 'GET'])
