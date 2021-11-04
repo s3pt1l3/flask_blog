@@ -1,13 +1,19 @@
 from datetime import datetime
 import re
 
-from flask import app
+from flask_security import UserMixin, RoleMixin
 
 from app import db
 
 """PostsTags tabel model (many to many relationship for posts and tags)"""
 posts_tags = db.Table('PostsTags', db.Column('post_id', db.Integer, db.ForeignKey(
     'Posts.post_id')), db.Column('tag_id', db.Integer, db.ForeignKey('Tags.tag_id')))
+
+
+"""UsersRoles tabel model (many to many relationship for users and roles)"""
+users_roles = db.Table('UsersRoles', 
+                       db.Column('user_id', db.Integer, db.ForeignKey('Users.user_id')), 
+                       db.Column('role_id', db.Integer, db.ForeignKey('Roles.role_id')))
 
 
 class Post(db.Model):
@@ -102,24 +108,6 @@ def select_all_posts():
     """
 
     return Post.query
-
-
-def update_post(post_id: int, title: str = None, text: str = None):
-    """
-    Function that updates post record from database
-
-    `post_id`: Post id
-    `title`: New post title
-    `text`: New post text
-    """
-
-    if title is not None:
-        Post.query.filter(Post.post_id == post_id).first().update(
-            {'title': title})
-    if text is not None:
-        Post.query.filter(Post.post_id == post_id).first().update(
-            {'text': text})
-    db.session.commit()
 
 
 def delete_post(post_id: int):
@@ -218,20 +206,6 @@ def select_all_tags():
     return Tag.query.all()
 
 
-def update_tag(tag_id: int, title: str = None):
-    """
-    Function that updates tag record from database
-
-    `tag_id`: Tag id
-    `title`: New tag title
-    """
-
-    if title is not None:
-        Tag.query.filter(Tag.tag_id == tag_id).first().update(
-            {'title': title})
-    db.session.commit()
-
-
 def delete_tag(tag_id: int):
     """
     Function that deletes tag record
@@ -241,3 +215,40 @@ def delete_tag(tag_id: int):
 
     Post.query.filter(Tag.tag_id == tag_id).first().delete()
     db.session.commit()
+
+
+class User(db.Model, UserMixin):
+    """
+    Users tabel model
+
+    `user_id`: User id
+    `email`: User email
+    `password`: User password
+    `roles`: Roles relationship
+    `created_at`: When the user was created
+    """
+    
+    __tablename__ = "Users"
+    
+    user_id = db.Column(db.Integer,  primary_key=True)
+    email = db.Column(db.String(320), unique=True)
+    password = db.Column(db.String(255))
+    roles = db.relationship('Role', secondary=users_roles, backref=db.backref('Users'), lazy='dynamic')
+    created_at = db.Column(db.DateTime, default=datetime.now())
+
+
+class Role(db.Model, RoleMixin):
+    """
+    Roles tabel model
+
+    `role_id`: Role id
+    `name`: Role name
+    `created_at`: When the role was created
+    """
+    
+    __tablename__ = "Roles"
+    
+    role_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(500), unique=True)
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    
