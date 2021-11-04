@@ -54,3 +54,17 @@ def new_post():
         return redirect(url_for('posts.post_page', slug=post.slug, post=post))
 
     return render_template('new_post.html', form=create_form)
+
+
+@posts.route('/<slug>/edit', methods=['POST', 'GET'])
+def post_update(slug):
+    post = select_post_by_slug(slug)
+    update_form = PostForm(obj=post)
+    
+    if request.method == 'POST':
+        update_form = PostForm(formdata=request.form, obj=post)
+        update_form.populate_obj(post)
+        db.session.commit()
+        return redirect(url_for('posts.post_page', slug=post.slug, post=post))
+    
+    return render_template('update_post.html', form=update_form, post=post)
