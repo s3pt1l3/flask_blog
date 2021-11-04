@@ -13,3 +13,4 @@ class Config:
     DATABASE_PATH = path.join(BASE_DIR, path.join('data', 'database.db'))
     SQLALCHEMY_DATABASE_URI = f'sqlite:///{DATABASE_PATH}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = 'asdasd'
